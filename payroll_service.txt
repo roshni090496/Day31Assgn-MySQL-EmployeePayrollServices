@@ -1,0 +1,149 @@
+Enter password: *************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.29 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE payroll_service;
+Query OK, 1 row affected (0.16 sec)
+
+mysql> SHOW databases;
++-----------------------+
+| Database              |
++-----------------------+
+| addressbook_servicedb |
+| candidate             |
+| information_schema    |
+| mysql                 |
+| payroll_service       |
+| performance_schema    |
+| sakila                |
+| sys                   |
+| world                 |
++-----------------------+
+9 rows in set (0.00 sec)
+
+mysql> USE payroll_service;
+Database changed
+mysql> CREATE TABLE emp_payroll(id int primary key auto_increment,name VARCHAR(20),salary int,start_date date);
+Query OK, 0 rows affected (0.82 sec)
+
+mysql> INSERT INTO emp_payroll(name,salary,start_date) VALUES('Roshni',3500000,'1996-04-09');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> INSERT INTO emp_payroll(name,salary,start_date) VALUES('Sweety',2500000,'1992-09-08');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> INSERT INTO emp_payroll(name,salary,start_date) VALUES('Raj',4000000,'1991-04-19');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> INSERT INTO emp_payroll(name,salary,start_date) VALUES('Dilip',4500000,'1989-06-15');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> SELECT * FROM emp_payroll;
++----+--------+---------+------------+
+| id | name   | salary  | start_date |
++----+--------+---------+------------+
+|  1 | Roshni | 3500000 | 1996-04-09 |
+|  2 | Sweety | 2500000 | 1992-09-08 |
+|  3 | Raj    | 4000000 | 1991-04-19 |
+|  4 | Dilip  | 4500000 | 1989-06-15 |
++----+--------+---------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT salary FROM emp_payroll WHERE name='Roshni';
++---------+
+| salary  |
++---------+
+| 3500000 |
++---------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM emp_payroll WHERE start_date between cast('1991-02-01' as date) and date(now());
++----+--------+---------+------------+
+| id | name   | salary  | start_date |
++----+--------+---------+------------+
+|  1 | Roshni | 3500000 | 1996-04-09 |
+|  2 | Sweety | 2500000 | 1992-09-08 |
+|  3 | Raj    | 4000000 | 1991-04-19 |
++----+--------+---------+------------+
+3 rows in set (0.03 sec)
+
+mysql> SELECT sum(salary) FROM emp_payroll;
++-------------+
+| sum(salary) |
++-------------+
+|    14500000 |
++-------------+
+1 row in set (0.05 sec)
+
+mysql> SELECT avg(salary) FROM emp_payroll;
++--------------+
+| avg(salary)  |
++--------------+
+| 3625000.0000 |
++--------------+
+1 row in set (0.02 sec)
+
+mysql> SELECT min(salary) FROM emp_payroll;
++-------------+
+| min(salary) |
++-------------+
+|     2500000 |
++-------------+
+1 row in set (0.05 sec)
+
+mysql> SELECT max(salary) FROM emp_payroll;
++-------------+
+| max(salary) |
++-------------+
+|     4500000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE emp_payroll add column phoneno VARCHAR(12),add column address VARCHAR(50) default ('Gandhinagar'),add column dept VARCHAR(30) not null;
+Query OK, 4 rows affected (1.21 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE emp_payroll add column basic_pay int, add column deductions int, add column taxable_pay int, add column income_tax int, add column net_pay int;
+Query OK, 0 rows affected (0.44 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC emp_payroll;
++-------------+-------------+------+-----+-----------------------+-------------------+
+| Field       | Type        | Null | Key | Default               | Extra             |
++-------------+-------------+------+-----+-----------------------+-------------------+
+| id          | int         | NO   | PRI | NULL                  | auto_increment    |
+| name        | varchar(20) | YES  |     | NULL                  |                   |
+| salary      | int         | YES  |     | NULL                  |                   |
+| start_date  | date        | YES  |     | NULL                  |                   |
+| phoneno     | varchar(12) | YES  |     | NULL                  |                   |
+| address     | varchar(50) | YES  |     | _cp850\'Gandhinagar\' | DEFAULT_GENERATED |
+| dept        | varchar(30) | NO   |     | NULL                  |                   |
+| basic_pay   | int         | YES  |     | NULL                  |                   |
+| deductions  | int         | YES  |     | NULL                  |                   |
+| taxable_pay | int         | YES  |     | NULL                  |                   |
+| income_tax  | int         | YES  |     | NULL                  |                   |
+| net_pay     | int         | YES  |     | NULL                  |                   |
++-------------+-------------+------+-----+-----------------------+-------------------+
+12 rows in set (0.05 sec)
+
+mysql> SELECT * FROM emp_payroll;
++----+--------+---------+------------+---------+-------------+------+-----------+------------+-------------+------------+---------+
+| id | name   | salary  | start_date | phoneno | address     | dept | basic_pay | deductions | taxable_pay | income_tax | net_pay |
++----+--------+---------+------------+---------+-------------+------+-----------+------------+-------------+------------+---------+
+|  1 | Roshni | 3500000 | 1996-04-09 | NULL    | Gandhinagar |      |      NULL |       NULL |        NULL |       NULL |    NULL |
+|  2 | Sweety | 2500000 | 1992-09-08 | NULL    | Gandhinagar |      |      NULL |       NULL |        NULL |       NULL |    NULL |
+|  3 | Raj    | 4000000 | 1991-04-19 | NULL    | Gandhinagar |      |      NULL |       NULL |        NULL |       NULL |    NULL |
+|  4 | Dilip  | 4500000 | 1989-06-15 | NULL    | Gandhinagar |      |      NULL |       NULL |        NULL |       NULL |    NULL |
++----+--------+---------+------------+---------+-------------+------+-----------+------------+-------------+------------+---------+
+4 rows in set (0.00 sec)
+
+mysql>
